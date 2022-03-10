@@ -1,5 +1,21 @@
-# microservice-fn-py [![CircleCI](https://badgen.net/circleci/github/SFDigitalServices/microservice-fn-py/main)](https://circleci.com/gh/SFDigitalServices/microservice-fn-py) [![Coverage Status](https://coveralls.io/repos/github/SFDigitalServices/microservice-fn-py/badge.svg?branch=main)](https://coveralls.io/github/SFDigitalServices/microservice-fn-py?branch=main)
-Azure serverless python function microservice template
+# abe-automation-fn-py [![CircleCI](https://badgen.net/circleci/github/SFDigitalServices/abe-automation-fn-py/main)](https://circleci.com/gh/SFDigitalServices/abe-automation-fn-py) [![Coverage Status](https://coveralls.io/repos/github/SFDigitalServices/abe-automation-fn-py/badge.svg?branch=main)](https://coveralls.io/github/SFDigitalServices/abe-automation-fn-py?branch=main)
+ABE Automation Azure serverless python function
+
+# Automation Logic
+* When submission is in `Submitted` status
+    * If record is found in `IDADATA`
+        * If there is existing classification in `IDADATA`
+            * Update submission to `Existing classification` status
+        * Else
+            * Update `SPOT_CHECK_PERCENT` of submission to `Spot check` status
+            * Otherwise
+                * Update submission to `Recorded`
+* When submission is in `Recorded` status
+    * If record is found in `IDADATA`
+        * Update `IDA_CATEGORY_ID`, `LAST_MODIFIED_BY`, `LAST_MODIFIED_DATE` in `IDADATA` for record
+
+## `api/webhook`
+Automation webhook 
 
 ## `api/status/http`
 Query http status of the serverless function.
