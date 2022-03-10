@@ -111,7 +111,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
 
                                     print(record.content)
                     response.status_code = 200
-                    response._content = b'"200 TEST"'
+                    response._content = b'"200 OK"'
 
         else:
             response.status_code = 200
