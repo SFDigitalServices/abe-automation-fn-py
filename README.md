@@ -13,6 +13,7 @@ ABE Automation Azure serverless python function
 * When submission is in `Recorded` status
     * If record is found in `IDADATA`
         * Update `IDA_CATEGORY_ID`, `LAST_MODIFIED_BY`, `LAST_MODIFIED_DATE` in `IDADATA` for record
+            * Generate a new `IDA_APP_NUM` if it does not have one. 
 
 ## `api/webhook`
 Automation webhook 
