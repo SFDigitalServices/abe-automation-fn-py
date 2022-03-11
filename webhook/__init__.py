@@ -86,32 +86,43 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
 
                                 elif submission_json["IDA_SUBMISSION_STATUS_id"] \
                                     == statuses["RECORDED"] \
-                                        and submission_json["IDA_CATEGORY_ID_LOOKUP_id"] \
-                                            and not record_json["IDA_CATEGORY_ID"]:
+                                        and submission_json["IDA_CATEGORY_ID_LOOKUP_id"]:
 
-                                    user = req_json["modified_by"].split("@")[0]
+                                    if record_json["IDA_CATEGORY_ID"]:
+                                        if record_json["IDA_CATEGORY_ID"] != \
+                                            submission_json["IDA_CATEGORY_ID_LOOKUP_id"]:
 
-                                    if user == "ds-admin":
-                                        user = "automation"
+                                            new_status = statuses.get("EXISTING_CLASS")
+                                            updates = {
+                                                "IDA_SUBMISSION_STATUS_id": new_status
+                                            }
+                                            record = noco.update_by_id(
+                                                "IDA_SUBMISSION", submission_json["ID"], updates)
 
-                                    abe_num = record_json["IDAAppNum"] \
-                                        if record_json["IDAAppNum"] \
-                                            else generate_abe_num(submission_json["ID"])
+                                    else:
+                                        user = req_json["modified_by"].split("@")[0]
 
-                                    updates = {
-                                        "IDA_CATEGORY_ID":
-                                            submission_json["IDA_CATEGORY_ID_LOOKUP_id"],
-                                        "IDAAppNum": abe_num,
-                                        "LASTModifiedBy": user,
-                                        "LASTModifiedDate":
-                                            str(datetime.now(pytz.timezone('US/Pacific')))
-                                    }
-                                    print(record_json["IDA_CATEGORY_ID"])
-                                    print(updates)
-                                    record = noco.update_by_id(
-                                        "IDADATA", record_json["ID"], updates)
+                                        if user == "ds-admin":
+                                            user = "automation"
 
-                                    print(record.content)
+                                        abe_num = record_json["IDAAppNum"] \
+                                            if record_json["IDAAppNum"] \
+                                                else generate_abe_num(submission_json["ID"])
+
+                                        updates = {
+                                            "IDA_CATEGORY_ID":
+                                                submission_json["IDA_CATEGORY_ID_LOOKUP_id"],
+                                            "IDAAppNum": abe_num,
+                                            "LASTModifiedBy": user,
+                                            "LASTModifiedDate":
+                                                str(datetime.now(pytz.timezone('US/Pacific')))
+                                        }
+                                        print(record_json["IDA_CATEGORY_ID"])
+                                        print(updates)
+                                        record = noco.update_by_id(
+                                            "IDADATA", record_json["ID"], updates)
+
+                                        print(record.content)
                     response.status_code = 200
                     response._content = b'"200 OK"'
 

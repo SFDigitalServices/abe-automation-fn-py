@@ -11,9 +11,14 @@ ABE Automation Azure serverless python function
             * Otherwise if submission has `IDA_CATEGORY_ID_LOOKUP_id`
                 * Update submission to `Recorded`
 * When submission is in `Recorded` status
-    * If record is found in `IDADATA` and do not have `IDA_CATEGORY_ID`
-        * Update `IDA_CATEGORY_ID`, `LAST_MODIFIED_BY`, `LAST_MODIFIED_DATE` in `IDADATA` for record
+    * If record is found in `IDADATA`
+        * If record has have `IDA_CATEGORY_ID`
+            * If record `IDA_CATEGORY_ID` does not match submission `IDA_CATEGORY_ID_LOOKUP_id`
+                * Update submission to `Existing classification` status
+        * Else
+            * Update `IDA_CATEGORY_ID`, `LAST_MODIFIED_BY`, `LAST_MODIFIED_DATE` in `IDADATA` for record
             * Generate a new `IDA_APP_NUM` if it does not have one. 
+
 
 ## `api/webhook`
 Automation webhook 
