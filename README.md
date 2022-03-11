@@ -8,10 +8,10 @@ ABE Automation Azure serverless python function
             * Update submission to `Existing classification` status
         * Else
             * Update `SPOT_CHECK_PERCENT` of submission to `Spot check` status
-            * Otherwise
+            * Otherwise if submission has `IDA_CATEGORY_ID_LOOKUP_id`
                 * Update submission to `Recorded`
 * When submission is in `Recorded` status
-    * If record is found in `IDADATA`
+    * If record is found in `IDADATA` and do not have `IDA_CATEGORY_ID`
         * Update `IDA_CATEGORY_ID`, `LAST_MODIFIED_BY`, `LAST_MODIFIED_DATE` in `IDADATA` for record
             * Generate a new `IDA_APP_NUM` if it does not have one. 
 

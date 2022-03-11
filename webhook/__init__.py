@@ -75,7 +75,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
 
                                         if chance <= int(os.getenv("SPOT_CHECK_PERCENT")):
                                             new_status = statuses.get("SPOT_CHECK")
-                                        else:
+                                        elif submission_json["IDA_CATEGORY_ID_LOOKUP_id"]:
                                             new_status = statuses.get("RECORDED")
 
                                     updates = {
@@ -86,7 +86,9 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
 
                                 elif submission_json["IDA_SUBMISSION_STATUS_id"] \
                                     == statuses["RECORDED"] \
-                                        and submission_json["IDA_CATEGORY_ID_LOOKUP_id"]:
+                                        and submission_json["IDA_CATEGORY_ID_LOOKUP_id"] \
+                                            and not record_json["IDA_CATEGORY_ID"]:
+
                                     user = req_json["modified_by"].split("@")[0]
 
                                     if user == "ds-admin":
