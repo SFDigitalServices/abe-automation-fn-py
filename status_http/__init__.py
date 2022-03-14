@@ -3,26 +3,21 @@ import os
 import json
 import logging
 import traceback
+from http import client
 import requests
 import jsend
 import azure.functions as func
 from requests.models import Response
-from shared_code.common import func_json_response
+from shared_code.common import func_json_response,get_http_response_by_status
 
 def main(req: func.HttpRequest) -> func.HttpResponse:
     """ main function for status/http """
     logging.info('Status processed a request.')
 
     try:
-        response = Response()
+        response = get_http_response_by_status(200)
         if req.get_body() and len(req.get_body()):
-            response.status_code = 202
-            # pylint: disable=protected-access
-            response._content = b'"202 Accepted"'
-        else:
-            response.status_code = 200
-            # pylint: disable=protected-access
-            response._content = b'"200 OK"'
+            response = get_http_response_by_status(202)
 
         headers = {
             "Access-Control-Allow-Origin": "*"

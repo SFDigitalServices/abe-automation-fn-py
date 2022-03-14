@@ -1,7 +1,9 @@
 """ Common shared functions """
 import os
 import json
+from http import client
 import jsend
+from requests.models import Response
 import azure.functions as func
 
 def func_json_response(response, headers=None, json_root="items"):
@@ -30,3 +32,15 @@ def validate_access(req: func.HttpRequest):
         else req.headers.get('ACCESS_KEY')
     if not access_key or verify_key != access_key:
         raise ValueError("Access Denied")
+
+def get_http_response_by_status(status:int):
+    """
+    Get Reponse object with corresponding HTTP Response status code with default text
+    e.g. status = 200 returns "200 OK"
+    """
+    response = Response()
+    response.status_code = status
+    # pylint: disable=protected-access
+    content = f"{response.status_code} {client.responses[response.status_code]}"
+    response._content = f"\"{content}\"".encode('ascii')
+    return response

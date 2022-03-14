@@ -10,7 +10,7 @@ import requests
 import jsend
 import azure.functions as func
 from requests.models import Response
-from shared_code.common import func_json_response, validate_access
+from shared_code import common
 from shared_code import noco
 
 # pylint: disable=too-many-branches,too-many-locals,too-many-statements
@@ -30,13 +30,12 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
 
     # pylint: disable=too-many-nested-blocks
     try:
-        validate_access(req)
+        common.validate_access(req)
 
-        response = Response()
+        response = common.get_http_response_by_status(500)
+
         if req.get_body() and len(req.get_body()):
-            response.status_code = 202
-            # pylint: disable=protected-access
-            response._content = b'"202 Accepted"'
+            response = common.get_http_response_by_status(202)
             print(req.get_body())
             req_json = req.get_json()
             if "status_id" in req_json and \
@@ -126,22 +125,16 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
                                             "IDADATA", record_json["ID"], updates)
 
                                         print(record.content)
-                    response.status_code = 200
-                    response._content = b'"200 OK"'
-
-        else:
-            response.status_code = 200
-            # pylint: disable=protected-access
-            response._content = b'"200 OK"'
+                    response = common.get_http_response_by_status(200)
 
         headers = {
             "Access-Control-Allow-Origin": "*"
         }
-        return func_json_response(response, headers, "message")
+        return common.func_json_response(response, headers, "message")
 
     #pylint: disable=broad-except
     except Exception as err:
-        logging.error("Status HTTP error occurred: %s", traceback.format_exc())
+        logging.error("ABE Webhook error occurred: %s", traceback.format_exc())
         msg_error = f"This endpoint encountered an error. {err}"
         func_response = json.dumps(jsend.error(msg_error))
         return func.HttpResponse(func_response, status_code=500)
