@@ -11,6 +11,7 @@ def get_by_id(table, idn):
         noco_request_url,
         headers={'xc-auth': os.getenv('NOCO_API_KEY')}
     )
+    response.raise_for_status()
     return response
 
 def update_by_id(table, idn, fields):
@@ -23,4 +24,5 @@ def update_by_id(table, idn, fields):
         headers={'xc-auth': os.getenv('NOCO_API_KEY')},
         json=fields
     )
+    response.raise_for_status()
     return response
