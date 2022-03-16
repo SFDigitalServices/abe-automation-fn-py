@@ -65,7 +65,8 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
                                 if submission_json["IDA_SUBMISSION_STATUS_id"] \
                                     == statuses["SUBMITTED"]:
 
-                                    if record_json["IDA_CATEGORY_ID"]:
+                                    if "IDA_CATEGORY_ID" in record_json and \
+                                        record_json["IDA_CATEGORY_ID"] is not None:
 
                                         new_status = statuses.get("EXISTING_CLASS")
 
@@ -74,7 +75,9 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
 
                                         if chance <= int(os.getenv("SPOT_CHECK_PERCENT")):
                                             new_status = statuses.get("SPOT_CHECK")
-                                        elif submission_json["IDA_CATEGORY_ID_LOOKUP_id"]:
+                                        elif "IDA_CATEGORY_ID_LOOKUP_id" in submission_json \
+                                            and submission_json["IDA_CATEGORY_ID_LOOKUP_id"] \
+                                                is not None:
                                             new_status = statuses.get("RECORDED")
 
                                     updates = {
