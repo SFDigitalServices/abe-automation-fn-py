@@ -121,6 +121,10 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
                                             "IDA_CATEGORY_ID":
                                                 submission_json["IDA_CATEGORY_ID_LOOKUP_id"],
                                             "IDAAppNum": abe_num,
+                                            "TECHNICAL_INFEASABILITY": \
+                                                submission_json["TECHNICAL_INFEASABILITY"],
+                                            "UNREASONABLE_HARDSHIP": \
+                                                submission_json["UNREASONABLE_HARDSHIP"],
                                             "LASTModifiedBy": user,
                                             "LASTModifiedDate":
                                                 str(datetime.now(pytz.timezone('US/Pacific')))
