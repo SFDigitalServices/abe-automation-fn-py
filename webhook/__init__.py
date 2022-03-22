@@ -12,6 +12,7 @@ import azure.functions as func
 from requests.models import Response
 from shared_code import common
 from shared_code import noco
+from shared_code import email
 
 # pylint: disable=too-many-branches,too-many-locals,too-many-statements
 def main(req: func.HttpRequest) -> func.HttpResponse:
@@ -133,6 +134,32 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
                                         print(updates)
                                         record = noco.update_by_id(
                                             "IDADATA", record_json["ID"], updates)
+
+                                        # send email to applicant
+                                        address_parts = [
+                                            record_json["PROPERTY_STREET_NUMBER"],
+                                            record_json["PROPERTY_STREET_NAME"],
+                                            record_json["PROPERTY_STREET_SFX"]
+                                        ]
+                                        # waived, exempt, compliant
+                                        complied_category_ids = [-1, 0, 1]
+                                        # non-compliant 0 step, 1 step, >1 step
+                                        non_complied_category_ids = [2, 3, 4]
+                                        if int(submission_json["IDA_CATEGORY_ID_LOOKUP_id"]) in \
+                                            complied_category_ids + non_complied_category_ids:
+
+                                            has_complied = \
+                                                int(submission_json["IDA_CATEGORY_ID_LOOKUP_id"]) \
+                                                in complied_category_ids
+                                            email.send_email(
+                                                submission_json["CONTACT_NAME"],
+                                                submission_json["CONTACT_EMAIL"],
+                                                {
+                                                    "projectAddress": " ".join(address_parts),
+                                                    "ABE_NUMBER": abe_num
+                                                },
+                                                has_complied
+                                            )
 
                                         print(record.content)
                     response = common.get_http_response_by_status(200)
