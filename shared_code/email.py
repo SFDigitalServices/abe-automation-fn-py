@@ -13,6 +13,10 @@ def send_email(to_name, to_email, replacements, has_complied=False):
     email_template_url = os.getenv('EMAIL_TEMPLATE_URL_COMPLIED') if has_complied \
         else os.getenv('EMAIL_TEMPLATE_URL_NOT_COMPLIED')
 
+    print(f'sending email to:{to_name} {to_email}')
+    print(f'compliance: {has_complied}')
+    print(f'template replacments: {replacements}')
+
     response = requests.post(
         email_api_url,
         headers={
@@ -37,7 +41,4 @@ def send_email(to_name, to_email, replacements, has_complied=False):
         }
     )
 
-    print(f'sending email to:{to_name} {to_email}')
-    print(f'compliance: {has_complied}')
-    print(f'template replacments: {replacements}')
     response.raise_for_status()

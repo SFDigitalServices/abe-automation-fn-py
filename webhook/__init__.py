@@ -135,6 +135,8 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
                                         record = noco.update_by_id(
                                             "IDADATA", record_json["ID"], updates)
 
+                                        print(record.content)
+
                                         # send email to applicant
                                         address_parts = [
                                             str(record_json["PROPERTYStreetNumber"]),
@@ -148,6 +150,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
                                         if int(submission_json["IDA_CATEGORY_ID_LOOKUP_id"]) in \
                                             complied_category_ids + non_complied_category_ids:
 
+                                            print("sending compliance email")
                                             has_complied = \
                                                 int(submission_json["IDA_CATEGORY_ID_LOOKUP_id"]) \
                                                 in complied_category_ids
@@ -161,7 +164,6 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
                                                 has_complied
                                             )
 
-                                        print(record.content)
                     response = common.get_http_response_by_status(200)
 
         headers = {
