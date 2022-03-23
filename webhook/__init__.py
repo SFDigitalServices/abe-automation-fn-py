@@ -137,9 +137,9 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
 
                                         # send email to applicant
                                         address_parts = [
-                                            record_json["PROPERTY_STREET_NUMBER"],
-                                            record_json["PROPERTY_STREET_NAME"],
-                                            record_json["PROPERTY_STREET_SFX"]
+                                            record_json["PROPERTYStreetNumber"],
+                                            record_json["PROPERTYStreetName"],
+                                            record_json["PROPERTYStreetSfx"]
                                         ]
                                         # waived, exempt, compliant
                                         complied_category_ids = [-1, 0, 1]
