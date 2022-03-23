@@ -137,7 +137,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
 
                                         # send email to applicant
                                         address_parts = [
-                                            record_json["PROPERTYStreetNumber"],
+                                            str(record_json["PROPERTYStreetNumber"]),
                                             record_json["PROPERTYStreetName"],
                                             record_json["PROPERTYStreetSfx"]
                                         ]
