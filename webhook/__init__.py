@@ -48,11 +48,12 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
 
                     submission = noco.get_by_id(
                         "IDA_SUBMISSION", int(req_json["ida_submission_id"]))
+                    print(f"submission: {submission.text}")
 
                     if submission and submission.json():
 
                         submission_json = submission.json()
-                        print(submission_json)
+                        print(f"submission_json: {submission_json}")
 
                         if submission_json["IDADATA_id"]:
 
@@ -61,7 +62,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
                             if record and record.json():
 
                                 record_json = record.json()
-                                print(record_json)
+                                print(f"record_json: {record_json}")
 
                                 if submission_json["IDA_SUBMISSION_STATUS_id"] \
                                     == statuses["SUBMITTED"]:
@@ -131,11 +132,11 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
                                                 str(datetime.now(pytz.timezone('US/Pacific')))
                                         }
                                         print(record_json["IDA_CATEGORY_ID"])
-                                        print(updates)
+                                        print(f"updates: {updates}")
                                         record = noco.update_by_id(
                                             "IDADATA", record_json["ID"], updates)
 
-                                        print(record.content)
+                                        print(f"update response: {record.content}")
 
                                         # send email to applicant
                                         address_parts = [
