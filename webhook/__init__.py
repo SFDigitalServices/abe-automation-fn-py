@@ -127,6 +127,13 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
                                                 submission_json["TECHNICAL_INFEASABILITY"],
                                             "UNREASONABLE_HARDSHIP": \
                                                 submission_json["UNREASONABLE_HARDSHIP"],
+                                            "APPLICATIONNumber": \
+                                                submission_json["APPLICATION_NUMBER"],
+                                            "FRMRcvdDt": \
+                                                submission_json["SUBMISSION_DATE"],
+                                            "WAIVER_FORM": \
+                                                "Y" if submission_json["PROCESS"]=="waiverForm" \
+                                                    else "N",
                                             "LASTModifiedBy": user,
                                             "LASTModifiedDate":
                                                 str(datetime.now(pytz.timezone('US/Pacific')))
