@@ -35,10 +35,15 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
 
         response = common.get_http_response_by_status(500)
 
-        if req.get_body() and len(req.get_body()):
+        req_body = req.get_body()
+        print(f"request.get_body(): {req.get_body()}")
+
+        if req_body and len(req_body):
             response = common.get_http_response_by_status(202)
-            print(req.get_body())
+
             req_json = req.get_json()
+            print(f"request.get_json(): {req_json}")
+
             if "status_id" in req_json and \
                 "ida_submission_id" in req_json and \
                 "modified_by" in req_json:
@@ -53,7 +58,6 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
                     if submission and submission.json():
 
                         submission_json = submission.json()
-                        print(f"submission_json: {submission_json}")
 
                         if submission_json["IDADATA_id"]:
 
@@ -139,7 +143,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
                                             "LASTModifiedDate":
                                                 str(datetime.now(pytz.timezone('US/Pacific')))
                                         }
-                                        print(record_json["IDA_CATEGORY_ID"])
+                                        print(f"ida_category_id: {record_json['IDA_CATEGORY_ID']}")
                                         print(f"updates: {updates}")
                                         record = noco.update_by_id(
                                             "IDADATA", record_json["ID"], updates)
