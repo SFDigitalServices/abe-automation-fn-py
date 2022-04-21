@@ -1,5 +1,27 @@
-# microservice-fn-py [![CircleCI](https://badgen.net/circleci/github/SFDigitalServices/microservice-fn-py/main)](https://circleci.com/gh/SFDigitalServices/microservice-fn-py) [![Coverage Status](https://coveralls.io/repos/github/SFDigitalServices/microservice-fn-py/badge.svg?branch=main)](https://coveralls.io/github/SFDigitalServices/microservice-fn-py?branch=main)
-Azure serverless python function microservice template
+# abe-automation-fn-py [![CircleCI](https://badgen.net/circleci/github/SFDigitalServices/abe-automation-fn-py/main)](https://circleci.com/gh/SFDigitalServices/abe-automation-fn-py) [![Coverage Status](https://coveralls.io/repos/github/SFDigitalServices/abe-automation-fn-py/badge.svg?branch=main)](https://coveralls.io/github/SFDigitalServices/abe-automation-fn-py?branch=main)
+ABE Automation Azure serverless python function
+
+# Automation Logic
+* When submission is in `Submitted` status
+    * If record is found in `IDADATA`
+        * If there is existing classification in `IDADATA`
+            * Update submission to `Existing classification` status
+        * Else
+            * Update `SPOT_CHECK_PERCENT` of submission to `Spot check` status
+            * Otherwise if submission has `IDA_CATEGORY_ID_LOOKUP_id`
+                * Update submission to `Recorded`
+* When submission is in `Recorded` status
+    * If record is found in `IDADATA`
+        * If record has have `IDA_CATEGORY_ID`
+            * If record `IDA_CATEGORY_ID` does not match submission `IDA_CATEGORY_ID_LOOKUP_id`
+                * Update submission to `Existing classification` status
+        * Else
+            * Update `IDA_CATEGORY_ID`, `LAST_MODIFIED_BY`, `LAST_MODIFIED_DATE` in `IDADATA` for record
+            * Generate a new `IDA_APP_NUM` if it does not have one. 
+
+
+## `api/webhook`
+Automation webhook 
 
 ## `api/status/http`
 Query http status of the serverless function.
@@ -63,7 +85,7 @@ Manually managing azure-functions-worker may cause unexpected issues
 
 ### Testing and Code Coverage
 Code coverage command with missing statement line numbers  
-> $ pipenv run python -m pytest --cov --cov-report term-missing
+> $ pipenv run python -m pytest -s --cov --cov-report term-missing
 
 ### Prec-commit
 Set up git hook scripts with pre-commit
@@ -104,5 +126,4 @@ Now, you can work on your new repo to your hearts content. If any changes are ma
 Psst: Don't forget to upload the fresh copy of your new repo back up to git:
 
 > $ git push origin main
-
 
