@@ -118,3 +118,13 @@ IDADATA = {
         "DESCRIPTION": "Non-compliant Elements, 0 step"
     }
 }
+
+ADDRESS_POST = {
+    "idadata_id": "1",
+    "PROPERTYStreetNumber": "1600",
+    "PROPERTYStreetNumberSfx": None,
+    "PROPERTYStreetName": "Pennsylvania",
+    "PROPERTYStreetSfx": "Ave",
+    "PROPERTYUnit": "",
+    "PROPERTYUnitSfx": None
+}
