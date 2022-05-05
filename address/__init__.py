@@ -42,11 +42,12 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
                 address_values.append(req_json.get(field, None))
             address = " ".join(filter(None, address_values))
 
-            updates = {
-                "FULL_ADDRESS": address
-            }
-            print(f'updates: {updates}')
-            noco.update_by_id("IDADATA", req_json["idadata_id"], updates)
+            if req_json["FULL_ADDRESS"] != address:
+                updates = {
+                    "FULL_ADDRESS": address
+                }
+                print(f'updates: {updates}')
+                noco.update_by_id("IDADATA", req_json["idadata_id"], updates)
 
         headers = {
             "Access-Control-Allow-Origin": "*"

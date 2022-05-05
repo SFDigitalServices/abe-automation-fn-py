@@ -126,5 +126,6 @@ ADDRESS_POST = {
     "PROPERTYStreetName": "Pennsylvania",
     "PROPERTYStreetSfx": "Ave",
     "PROPERTYUnit": "",
-    "PROPERTYUnitSfx": None
+    "PROPERTYUnitSfx": None,
+    "FULL_ADDRESS": ""
 }
