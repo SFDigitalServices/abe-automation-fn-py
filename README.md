@@ -23,6 +23,10 @@ ABE Automation Azure serverless python function
 ## `api/webhook`
 Automation webhook 
 
+## `api/address`
+Endpoint for concatenating address fields and keeping the FULL_ADDRESS column up to date.
+See ADDRESS_POST in tests/mocks.py for example of parameters that the api handles.
+
 ## `api/status/http`
 Query http status of the serverless function.
 
