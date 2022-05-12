@@ -1,4 +1,4 @@
-""" status/http init file """
+""" address init file """
 import os
 import json
 import logging
@@ -56,7 +56,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
 
     #pylint: disable=broad-except
     except Exception as err:
-        logging.error("Status HTTP error occurred: %s", traceback.format_exc())
+        logging.error("Address concatenation error occurred: %s", traceback.format_exc())
         msg_error = f"This endpoint encountered an error. {err}"
         func_response = json.dumps(jsend.error(msg_error))
         return func.HttpResponse(func_response, status_code=500)
