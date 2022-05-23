@@ -1,4 +1,4 @@
-""" address init file """
+""" blocklot init file """
 import os
 import json
 import logging
@@ -11,18 +11,14 @@ from requests.models import Response
 from shared_code import common
 from shared_code import noco
 
-address_fields = [
-    "PROPERTYStreetNumber",
-    "PROPERTYStreetNumberSfx",
-    "PROPERTYStreetName",
-    "PROPERTYStreetSfx",
-    "PROPERTYUnit",
-    "PROPERTYUnitSfx"
+fields = [
+    "BLOCK",
+    "LOT"
 ]
 
 def main(req: func.HttpRequest) -> func.HttpResponse:
-    """ update combined address field """
-    logging.info('Processing address endpoint request')
+    """ update combined blocklot field """
+    logging.info('Processing blocklot endpoint request')
 
     try:
         common.validate_access(req)
@@ -30,30 +26,29 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
         response = common.get_http_response_by_status(200)
 
         req_body = req.get_body()
-        print(f"request.get_body(): {req.get_body()}")
         if req_body and len(req_body):
             response = common.get_http_response_by_status(202)
 
             req_json = req.get_json()
-            print(f"request.get_json(): {req_json}")
+            print(f"req_json: {req_json}")
 
-            address = common.combine_fields(address_fields, req_json, " ")
+            blocklot = common.combine_fields(fields, req_json, "")
 
-            if req_json["FULL_ADDRESS"] != address:
+            if req_json["BLOCKLOT"] != blocklot:
                 updates = {
-                    "FULL_ADDRESS": address
+                    "BLOCKLOT": blocklot
                 }
                 print(f'updates: {updates}')
                 noco.update_by_id("IDADATA", req_json["idadata_id"], updates)
 
-        headers = {
-            "Access-Control-Allow-Origin": "*"
-        }
-        return common.func_json_response(response, headers, "message")
+        return common.func_json_response(
+            response,
+            {"Access-Control-Allow-Origin": "*"},
+            "message")
 
     #pylint: disable=broad-except
     except Exception as err:
-        logging.error("Address concatenation error occurred: %s", traceback.format_exc())
+        logging.error("Blocklot concatenation error occurred: %s", traceback.format_exc())
         msg_error = f"This endpoint encountered an error. {err}"
         func_response = json.dumps(jsend.error(msg_error))
         return func.HttpResponse(func_response, status_code=500)

@@ -129,3 +129,10 @@ ADDRESS_POST = {
     "PROPERTYUnitSfx": None,
     "FULL_ADDRESS": ""
 }
+
+BLOCKLOT_POST = {
+    "idadata_id": "1",
+    "BLOCK": "001",
+    "LOT": "111",
+    "BLOCKLOT": ""
+}
