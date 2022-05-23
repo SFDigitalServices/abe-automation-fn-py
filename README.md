@@ -27,6 +27,10 @@ Automation webhook
 Endpoint for concatenating address fields and keeping the FULL_ADDRESS column up to date.
 See ADDRESS_POST in tests/mocks.py for example of parameters that the api handles.
 
+## `api/blocklot`
+Endpoint for concatenating block and lot fields and keeping the BLOCKLOT column up to date.
+See BLOCKLOT_POST in tests/mocks.py for example of parameters to send the api.
+
 ## `api/status/http`
 Query http status of the serverless function.
 
