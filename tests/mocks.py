@@ -104,7 +104,7 @@ IDADATA = {
     "EXT_TIME_FILE_PERM_APPL": "N",
     "RESIDENCE_TYPE": None,
     "IDA_CATEGORY_ID": None,
-    "combined_address": "1 MAIN  ST",
+    "FULL_ADDRESS": "1 MAIN  ST",
     "IDAProfessionalList": [],
     "IDA_SUBMISSIONList": [
         {
@@ -116,7 +116,8 @@ IDADATA = {
     "IDACategoryIdLookupRead": {
         "IDA_CATEGORY_ID": 2,
         "DESCRIPTION": "Non-compliant Elements, 0 step"
-    }
+    },
+    "BLOCKLOT": "6532021"
 }
 
 ADDRESS_POST = {
