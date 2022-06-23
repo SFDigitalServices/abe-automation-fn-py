@@ -151,11 +151,6 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
                                         print(f"update response: {record.content}")
 
                                         # send email to applicant
-                                        address_parts = [
-                                            str(record_json["PROPERTYStreetNumber"]),
-                                            record_json["PROPERTYStreetName"],
-                                            record_json["PROPERTYStreetSfx"]
-                                        ]
                                         # waived, exempt, compliant
                                         complied_category_ids = [-1, 0, 1]
                                         # non-compliant 0 step, 1 step, >1 step
@@ -171,7 +166,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
                                                 submission_json["CONTACT_NAME"],
                                                 submission_json["CONTACT_EMAIL"],
                                                 {
-                                                    "projectAddress": " ".join(address_parts),
+                                                    "projectAddress": record_json["FULL_ADDRESS"],
                                                     "ABE_NUMBER": abe_num
                                                 },
                                                 has_complied
