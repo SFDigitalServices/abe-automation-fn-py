@@ -1,5 +1,5 @@
 """ Test for webhook endpoint """
-# pylint: disable=redefined-outer-name,no-member,unused-argument,unused-import
+# pylint: disable=redefined-outer-name,no-member,unused-argument,unused-import,too-many-locals
 
 import os
 import json
@@ -90,7 +90,7 @@ def test_function_submitted(
     get_requests.append(idadata_get)
 
     patch_requests_get.side_effect = get_requests
-    patch_requests_put.return_value.content = json.dumps(mocks.IDADATA).encode('utf8')
+    patch_requests_put.return_value.content = json.dumps(mocks.SUBMISSION).encode('utf8')
 
     # Construct a mock HTTP request.
     params = mocks.NOCO_WEBHOOK.copy()
@@ -274,3 +274,58 @@ def test_function_submitted_existing_class(
     resp = main(req)
 
     assert resp.status_code == 200
+
+@patch('shared_code.email.requests.post')
+@patch('shared_code.noco.requests.put')
+@patch('shared_code.noco.requests.get')
+def test_function_submitted_undelete_idata(
+    patch_requests_get,
+    patch_requests_put,
+    patch_email,
+    mock_env_access_key):
+    """ success webhook get with submitted status where ida_data record was deleted """
+    print("*** test_function_submitted")
+
+    get_requests = []
+    submission_get = Mock()
+    submission = mocks.SUBMISSION.copy()
+    submission["IDA_SUBMISSION_STATUS_id"] = 4
+    submission_get.text = json.dumps(submission)
+    submission_get.json.return_value = submission
+    get_requests.append(submission_get)
+
+    idadata_get = Mock()
+    idadata = mocks.IDADATA.copy()
+    idadata["DELETEDate"] = "2022-01-01"
+    idadata_get.text = json.dumps(idadata)
+    idadata_get.json.return_value = idadata
+    get_requests.append(idadata_get)
+
+    patch_requests_get.side_effect = get_requests
+
+    put_requests = []
+    idadata_put = Mock()
+    idadata_put.content = json.dumps(idadata).encode('utf8')
+    put_requests.append(idadata_put)
+
+    submission_put = Mock()
+    submission_put.content = json.dumps(mocks.SUBMISSION).encode('utf8')
+    put_requests.append(submission_put)
+
+    patch_requests_put.side_effect = put_requests
+
+    # Construct a mock HTTP request.
+    params = mocks.NOCO_WEBHOOK.copy()
+    params["status_id"] = 4
+    req = func.HttpRequest(
+        method='GET',
+        headers=CLIENT_HEADERS,
+        body=json.dumps(params).encode('utf8'),
+        url='/api/webhook')
+
+    # Call the function.
+    resp = main(req)
+
+    assert resp.status_code == 200
+    (_, kwargs) = patch_requests_put.call_args_list[0]
+    assert kwargs['json'] == {"DELETEDate": None}
