@@ -35,7 +35,6 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
 
         response = common.get_http_response_by_status(500)
 
-        print("here")
         req_body = req.get_body()
         print(f"request.get_body(): {req.get_body()}")
 
@@ -76,7 +75,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
                                         # received a submission for an IDA_DATA record
                                         # that was soft deleted.  undelete it
                                         noco.update_by_id(
-                                            "IDA_DATA",
+                                            "IDADATA",
                                             record_json["ID"],
                                             {"DELETEDate": None}
                                         )
