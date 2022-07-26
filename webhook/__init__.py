@@ -71,6 +71,15 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
                                 if submission_json["IDA_SUBMISSION_STATUS_id"] \
                                     == statuses["SUBMITTED"]:
 
+                                    if record_json["DELETEDate"] is not None:
+                                        # received a submission for an IDA_DATA record
+                                        # that was soft deleted.  undelete it
+                                        noco.update_by_id(
+                                            "IDADATA",
+                                            record_json["ID"],
+                                            {"DELETEDate": None}
+                                        )
+
                                     new_status = None
                                     if "IDA_CATEGORY_ID" in record_json and \
                                         record_json["IDA_CATEGORY_ID"] is not None:
